@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      QR Codes
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="qrEntries?.length > 0" (click)="isCardView = !isCardView">
+        <ion-icon name="{{isCardView ? 'list-outline' :  'albums-outline'}}"></ion-icon>
+      </ion-button>
+      <ion-button (click)="toggleTheme()">
+        <ion-icon name="contrast-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="success" (click)="scan()">
+      <ion-icon name="camera-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div *ngIf="qrEntries && qrEntries?.length === 0; else QrCodes">
+    <h3>Keine QR Codes gespeichert</h3>
+  </div>
+
+  <ng-template #QrCodes>
+    <ion-slides [pager]="true" *ngIf="isCardView; else DetailView">
+      <ion-slide *ngFor="let qrEntry of qrEntries" (click)="detail(qrEntry)">
+        <ion-card #card>
+          <qrcode [width]="card.offsetWidth" [elementType]="'svg'" [qrdata]="qrEntry.qrCode"></qrcode>
+          <ion-card-header>
+            <ion-card-title>{{typeDisplay(qrEntry.json)}}</ion-card-title>
+            <ion-card-subtitle>{{qrEntry.json['nam']['gn'] + ' ' + qrEntry.json['nam']['fn']}}</ion-card-subtitle>
+          </ion-card-header>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+
+    <ng-template #DetailView>
+      <ion-list>
+        <ion-item-sliding *ngFor="let qrEntry of qrEntries">
+          <ion-item [detail]="true" (click)="detail(qrEntry)">
+            <ion-label>
+              <h1>{{typeDisplay(qrEntry.json)}}</h1>
+              <h2>{{qrEntry.json['nam']['gn'] + ' ' + qrEntry.json['nam']['fn']}}</h2>
+            </ion-label>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-list>
+    </ng-template>
+  </ng-template>
+
+</ion-content>

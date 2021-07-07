@@ -1,0 +1,7 @@
+{
+  "name": "Green Pass",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

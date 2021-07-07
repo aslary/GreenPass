@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Details</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="delete()">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #content [fullscreen]="true" class="ion-padding">
+  <h3>QR Code</h3>
+  <qrcode [width]="content.offsetWidth" [elementType]="'svg'" [qrdata]="qrEntry.qrCode"></qrcode>
+
+  <h3>Daten</h3>
+  <pre>{{qrEntry.json | json}}</pre>
+</ion-content>
